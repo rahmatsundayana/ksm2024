@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kartu Nama Peserta</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes fly {
+            0% { transform: translateY(0) translateX(0); }
+            50% { transform: translateY(-20px) translateX(20px); }
+            100% { transform: translateY(0) translateX(0); }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #e0f2f1 url('https://www.w3schools.com/w3images/forest.jpg') no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 1;
+        }
+
+        .welcome-container {
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .welcome-text {
+            font-size: 36px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 50px;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.7);
+            animation: fadeIn 1s ease-out;
+        }
+
+        .welcome-text span {
+            display: block;
+            font-size: 24px;
+            font-weight: normal;
+            color: #d9f2d9;
+            margin: 5px 0;
+        }
+
+        .welcome-image {
+            width: 300px;
+            height: auto;
+            margin-bottom: 20px;
+            animation: fly 2s infinite;
+        }
+
+        .start-button {
+            display: block;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #4caf50, #388e3c);
+            color: #fff;
+            font-size: 18px;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 25px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            transition: background 0.3s, transform 0.3s;
+            margin-top: 2px;
+            animation: slideUp 1s ease-out;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            aria-label: "Mulai";
+            tabindex: 0;
+        }
+
+        .start-button:hover {
+            background: linear-gradient(135deg, #388e3c, #4caf50);
+            transform: scale(1.05);
+        }
+
+        .start-button:focus {
+            outline: none;
+        }
+
+        .card-container {
+            text-align: center;
+            position: relative;
+            display: none;
+            animation: fadeIn 1s ease-out;
+            z-index: 2;
+        }
+
+        .logos {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: -40px;
+            position: relative;
+        }
+
+        .logos img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 3px solid #fff;
+            background-color: #fff;
+            margin: 0 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 1s ease-out;
+        }
+
+        .card {
+            width: 360px;
+            padding: 20px;
+            background: linear-gradient(135deg, #b2dfdb, #004d40);
+            border-radius: 15px;
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+            color: #333;
+            position: relative;
+            animation: fadeIn 1.2s ease-out;
+            border: 2px solid #009688;
+            overflow: hidden;
+            margin-top: 80px;
+            z-index: 2;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -20%;
+            left: -20%;
+            width: 140%;
+            height: 140%;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            z-index: 0;
+            transform: rotate(-30deg);
+        }
+
+        .card img {
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            margin-bottom: 16px;
+            border: 4px solid #fff;
+            background-color: #fff;
+            position: relative;
+            z-index: 1;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .card h2 {
+            margin: 0 0 8px;
+            font-size: 28px;
+            color: #004d40;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        .card p {
+            margin: 4px 0;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .card .email,
+        .card .phone,
+        .card .gender,
+        .card .education {
+            background-color: #fff;
+            padding: 10px;
+            border-radius: 10px;
+            margin-top: 10px;
+            font-size: 16px;
+            color: #004d40;
+            border: 2px solid #009688;
+        }
+
+        .explore-button {
+            display: none;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #4caf50, #388e3c);
+            color: #fff;
+            font-size: 18px;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 25px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            transition: background 0.3s, transform 0.3s;
+            animation: fadeIn 1.2s ease-out;
+            margin-top: 20px;
+            position: relative;
+            z-index: 2;
+            font-family: 'Poppins', sans-serif;
+            aria-label: "Explore Ternate";
+            tabindex: 0;
+        }
+
+        .explore-button:hover {
+            background: linear-gradient(135deg, #388e3c, #4caf50);
+            transform: scale(1.05);
+        }
+
+        .explore-button:focus {
+            outline: none;
+        }
+
+        .additional-buttons {
+            display: none;
+            margin-top: 20px;
+            text-align: center;
+            z-index: 2;
+            position: relative;
+        }
+
+        .additional-buttons a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px 30px;
+            background: #009688;
+            color: #fff;
+            font-size: 18px;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 25px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            margin: 10px 0;
+            transition: background 0.3s, transform 0.3s;
+            animation: slideIn 0.6s ease-out;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            aria-label: "Explore Section";
+            tabindex: 0;
+        }
+
+        .additional-buttons a img {
+            margin-right: 10px;
+        }
+
+        .additional-buttons a:hover {
+            background: #00796b;
+            transform: scale(1.05);
+        }
+
+        .section {
+            display: none;
+            background: #fff;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            width: 80%;
+            max-width: 600px;
+            margin: 20px;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            animation: slideIn 0.6s ease-out;
+        }
+
+        .section h2 {
+            margin-top: 0;
+            color: #00796b;
+        }
+
+        .back-button {
+            display: none;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #d32f2f, #c62828);
+            color: #fff;
+            font-size: 18px;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 25px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            transition: background 0.3s, transform 0.3s;
+            margin-top: 20px;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 2;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            aria-label: "Kembali";
+            tabindex: 0;
+        }
+
+        .back-button:hover {
+            background: linear-gradient(135deg, #c62828, #d32f2f);
+            transform: scale(1.05);
+        }
+
+        .back-button:focus {
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay"></div>
+
+    <!-- Welcome Message -->
+    <div class="welcome-container">
+        <div class="welcome-text">
+            <span>Selamat Datang</span>
+            <span>Peserta KSM Nasional dan Myress</span>
+        </div>
+        <img src="http://laravel8.kemenag.go.id/gambar/burung.png" alt="Selamat Datang" class="welcome-image" id="welcomeImage">
+        <a class="start-button" id="startButton" aria-label="Mulai">Mulai</a>
+    </div>
+
+    <!-- Kartu Nama -->
+    <div class="card-container" id="cardContainer">
+        <div class="logos">
+            <img src="https://www.w3schools.com/w3images/avatar2.png" alt="Logo 1">
+            <img src="https://www.w3schools.com/w3images/avatar6.png" alt="Logo 2">
+            <img src="https://www.w3schools.com/w3images/avatar5.png" alt="Logo 3">
+        </div>
+        <div class="card">
+            <img src="https://www.w3schools.com/w3images/avatar5.png" alt="Foto Peserta">
+            <h2>Nama Peserta</h2>
+            <p>Peserta Kompetensi Sains Madrasah</p>
+            <div class="gender">Jenis Kelamin: Laki-laki/Perempuan</div>
+            <div class="education">Pendidikan: SMA/SMK/MA</div>
+            <div class="email">Email: peserta@example.com</div>
+            <div class="phone">Telepon: 08123456789</div>
+        </div>
+    </div>
+
+    <a href="#" class="explore-button" id="exploreButton" aria-label="Explore Ternate">Ayook! Explore Ternate</a>
+
+    <div class="additional-buttons" id="additionalButtons">
+        <a href="#" data-section="kuliner" class="section-button" aria-label="Kuliner">
+            <img src="https://img.icons8.com/ios-filled/50/000000/restaurant.png" alt="Kuliner Icon">
+            Kuliner
+        </a>
+        <a href="#" data-section="wisata-religi" class="section-button" aria-label="Wisata Religi">
+            <img src="https://img.icons8.com/ios-filled/50/000000/monument.png" alt="Wisata Religi Icon">
+            Wisata Religi
+        </a>
+        <a href="#" data-section="wisata-alam" class="section-button" aria-label="Wisata Alam">
+            <img src="https://img.icons8.com/ios-filled/50/000000/nature.png" alt="Wisata Alam Icon">
+            Wisata Alam
+        </a>
+    </div>
+
+    <!-- Section Contents -->
+    <div id="kuliner" class="section">
+        <h2>Kuliner Ternate</h2>
+        <p>Konten mengenai kuliner khas Ternate akan ditampilkan di sini. Jelajahi berbagai makanan lezat yang ditawarkan oleh kota ini!</p>
+    </div>
+
+    <div id="wisata-religi" class="section">
+        <h2>Wisata Religi</h2>
+        <p>Konten mengenai tempat-tempat wisata religi di Ternate akan ditampilkan di sini. Temukan lokasi-lokasi yang memiliki nilai religius tinggi!</p>
+    </div>
+
+    <div id="wisata-alam" class="section">
+        <h2>Wisata Alam</h2>
+        <p>Konten mengenai wisata alam di Ternate akan ditampilkan di sini. Nikmati keindahan alam dan keajaiban alam yang ada di Ternate!</p>
+    </div>
+
+    <a href="#" class="back-button" id="backButton" aria-label="Kembali">Kembali</a>
+
+    <script>
+        // Show the card and explore button when the user clicks on "Mulai"
+        document.getElementById('startButton').onclick = function() {
+            document.getElementById('welcomeImage').style.display = 'none';
+            document.querySelector('.welcome-container').style.display = 'none';
+            document.getElementById('cardContainer').style.display = 'block';
+            document.getElementById('exploreButton').style.display = 'inline-block';
+            document.getElementById('additionalButtons').style.display = 'none'; // Ensure additional buttons are hidden
+            document.getElementById('backButton').style.display = 'none'; // Hide back button initially
+        };
+    
+        // Handle the Explore Ternate button click
+        document.getElementById('exploreButton').addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent default link behavior
+    
+            // Add fade-out animation to the explore button and card
+            document.getElementById('cardContainer').style.animation = 'fadeOut 1s ease-out';
+            this.style.animation = 'fadeOut 1s ease-out';
+    
+            // Hide card and explore button after animation
+            setTimeout(function() {
+                document.getElementById('cardContainer').style.display = 'none';
+                document.getElementById('exploreButton').style.display = 'none';
+    
+                // Show additional buttons and back button after hiding card and explore button
+                document.getElementById('additionalButtons').style.display = 'block';
+                document.getElementById('backButton').style.display = 'block';
+            }, 1000); // Delay sesuai durasi animasi
+        });
+    
+        // Handle the back button click
+        document.getElementById('backButton').addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent default link behavior
+    
+            // Hide additional buttons and back button
+            document.getElementById('additionalButtons').style.display = 'none';
+            this.style.display = 'none';
+    
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.style.display = 'none';
+            });
+    
+            // Show card and explore button
+            document.getElementById('cardContainer').style.display = 'block';
+            document.getElementById('exploreButton').style.display = 'inline-block';
+        });
+    
+        // Handle the section button click
+        document.querySelectorAll('.section-button').forEach(button => {
+            button.addEventListener('click', function(event) {
+                event.preventDefault(); // Prevent default link behavior
+    
+                // Hide all sections
+                document.querySelectorAll('.section').forEach(section => {
+                    section.style.display = 'none';
+                });
+    
+                // Show the selected section
+                const sectionId = this.getAttribute('data-section');
+                document.getElementById(sectionId).style.display = 'block';
+            });
+        });
+    </script>
+    
+</body>
+</html>
